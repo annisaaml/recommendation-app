@@ -51,6 +51,13 @@ with tab1:
     st.text("")
     st.text("")
 
+    options = st.multiselect(
+        'Skincare apa yang Anda cari',
+        ['serum', 'eye treatment', 'skin soothing', 'night cream', 'day cream', 'facial wash', 'makeup remover', 'toner', 'peeling', 'sun protection', 'scrub'])
+
+    st.text("")
+    st.text("")
+
     desc = st.text_input(label="Deskripsikan jenis kulit dan keluhan atau tujuan memakai skincare", max_chars=50, help="contoh: kulit kering berjerawat noda hitam", label_visibility="visible")
     for i in desc.split():
         if i == 'jerawat':
@@ -80,7 +87,10 @@ with tab1:
         recommended_skincare = recommend_table(desc, allergen)
         def path_to_image_html(path):
             return '<img src="' + path + '" width="130" >'
-
+        
+        if options:
+            recommended_skincare = recommended_skincare[recommended_skincare['KATEGORI'].isin(options)]
+        
         recommended_skincare['DESKRIPSI'] = recommended_skincare['DESKRIPSI'].str.replace('\n', '<br>')
 
         def add_row_color(row):
